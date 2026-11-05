@@ -81,16 +81,15 @@ function Index() {
           </div>
           {ready && (
             <h1 className="font-display font-extrabold uppercase leading-[0.82] tracking-tighter" style={{ transform: "translate(var(--mx,0),var(--my,0))", transition: "transform .4s ease-out" }}>
-              <span className="block overflow-hidden text-[11vw] md:text-[7vw]"><span className="rise-line">Engineered</span>{" "}<span className="rise-line font-serif font-normal normal-case italic tracking-normal" style={{ animationDelay: ".1s" }}>for</span></span>
+              <span className="block overflow-hidden text-[11vw] md:text-[7vw]"><span className="rise-line">Naitik Singh</span></span>
               <span className="block overflow-hidden text-[11vw] md:text-[7vw]">
-                <span className="rise-line text-outline" style={{ animationDelay: ".18s" }}>speed</span>{" "}
-                <span className="rise-line" style={{ animationDelay: ".26s" }}>&amp; precision.</span>
+                <span className="rise-line text-outline" style={{ animationDelay: ".15s" }}>Bhadoriya</span>
               </span>
             </h1>
           )}
           <div className="mt-10 grid gap-8 border-t pt-6 md:grid-cols-3">
             <p className="text-sm leading-relaxed text-muted-foreground md:col-span-2 md:max-w-xl">
-              {ready && <Scramble text="Naitik Singh Bhadoriya" className="text-foreground" />} — full-stack developer writing C++ where it counts and React where it shows. I turn hard problems into fast, quiet, reliable software.
+              {ready && <Scramble text="Full-stack developer" className="text-foreground" />} based in Indore, India. I build web apps with React, Next.js and TypeScript, and write C++ for performance-focused work.
             </p>
             <div className="flex gap-3 md:justify-end">
               <a href="#work" className="border bg-foreground px-6 py-3 text-xs uppercase tracking-widest text-background transition hover:bg-transparent hover:text-foreground">View work ↘</a>
@@ -111,13 +110,13 @@ function Index() {
           <Label cmd="whoami" />
           <Reveal>
             <h2 className="max-w-5xl font-display text-4xl font-bold leading-[0.95] tracking-tight md:text-6xl">
-              Code is easy. <span className="font-serif font-normal italic text-muted-foreground">Craft is the point.</span>
+              About <span className="font-serif font-normal italic text-muted-foreground">me</span>
             </h2>
           </Reveal>
           <div className="mt-16 grid gap-12 md:grid-cols-2">
             <Reveal delay={100}>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                I'm a Computer Science student from Indore who likes working close to the metal and close to the user. Some days that means shaving milliseconds off a C++ routine; other days it's getting a Next.js interface to feel effortless. Either way: clean architecture, honest benchmarks, sharp details.
+                I'm a Computer Science student and full-stack developer. I work on web apps with Next.js and TypeScript, and I use C++ for data structures, algorithms and systems work. I like clean code, fast apps and simple interfaces.
               </p>
               <blockquote className="mt-10 border-l-2 border-foreground pl-6 font-serif text-2xl italic">
                 "Make it work, make it right, make it fast."
@@ -132,18 +131,6 @@ function Index() {
               </dl>
             </Reveal>
           </div>
-        </section>
-
-        {/* MANIFESTO */}
-        <section className="border-y px-6 py-24 md:px-10">
-          <Label cmd="cat manifesto.txt" />
-          {[["Ship it clean.", "Ship it fast.", "Ship it once."], ["If it isn't measured,", "it isn't", "engineering."], ["Break the build —", "never", "the trust."]].map((l, i) => (
-            <Reveal key={i} delay={i * 80}>
-              <p className="font-display text-3xl font-extrabold uppercase leading-[1.1] tracking-tight md:text-5xl">
-                {l[0]} <span className="text-outline">{l[1]}</span> <span className="font-serif font-normal normal-case italic">{l[2]}</span>
-              </p>
-            </Reveal>
-          ))}
         </section>
 
         {/* WORK */}
@@ -172,7 +159,7 @@ function Index() {
         <section id="stack" className="grid gap-20 border-t px-6 py-24 md:grid-cols-2 md:px-10">
           <div>
             <Label cmd="history" />
-            {[["2025 — now", "Full Stack Developer", "Production apps with Next.js 15, TypeScript and TanStack Query. Architecture and performance first.", "Freelance"], ["ongoing", "Computer Science", "DSA, systems design, operating systems, competitive programming. Heavy C++ focus.", "Student"]].map(([d, t, s, r], i) => (
+            {[["2025 — now", "Full Stack Developer", "Building web applications with Next.js, TypeScript and TanStack Query.", "Freelance"], ["ongoing", "Computer Science", "Studying data structures, algorithms, operating systems and systems design, mostly in C++.", "Student"]].map(([d, t, s, r], i) => (
               <Reveal key={t} delay={i * 100} className="relative border-l py-6 pl-8">
                 <span className="absolute -left-[5px] top-8 h-2.5 w-2.5 rounded-full bg-foreground" />
                 <div className="text-xs text-muted-foreground">{d} · {r}</div>
@@ -210,12 +197,12 @@ function Index() {
           <Label cmd="contact --send" />
           <Reveal>
             <h2 className="font-display text-[10vw] font-extrabold uppercase leading-[0.9] tracking-tighter md:text-[5.5vw]">
-              Got a hard<br /><span className="font-serif font-normal normal-case italic">problem?</span> <span className="text-outline">Let's talk.</span>
+              Get in<br /><span className="text-outline">touch</span>
             </h2>
           </Reveal>
           <div className="mt-16 grid gap-12 md:grid-cols-2">
             <div className="space-y-6 text-sm">
-              <p className="max-w-md text-muted-foreground">Open to new opportunities, collaborations, and difficult problems. Drop a message — I read everything.</p>
+              <p className="max-w-md text-muted-foreground">Open to freelance work, internships and collaborations. Send me a message and I'll get back to you.</p>
               <a href="mailto:naitiksinghh01@gmail.com" className="block font-display text-xl font-bold underline-offset-8 hover:underline md:text-3xl">naitiksinghh01@gmail.com</a>
               <div className="text-muted-foreground">Indore, India · available for work</div>
             </div>
@@ -238,7 +225,7 @@ function Index() {
 
         <footer className="flex flex-wrap justify-between gap-4 border-t px-6 py-8 text-xs text-muted-foreground md:px-10">
           <span>© 2026 Naitik Singh Bhadoriya</span>
-          <span>compiled with -O3 · no bugs shipped (allegedly)</span>
+          <span>Indore, India</span>
           <a href="#top" className="hover:text-foreground">back to top ↑</a>
         </footer>
 
