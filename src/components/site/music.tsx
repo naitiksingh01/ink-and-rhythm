@@ -114,8 +114,8 @@ export function OnRepeat() {
       </div>
       <div className="flex flex-col justify-between gap-8">
         <div>
-          <div className="font-display text-5xl font-extrabold tracking-tight md:text-7xl">{m.loaded ? t.title : "No track loaded"}</div>
-          <div className="mt-2 font-serif text-2xl italic text-muted-foreground">{m.loaded ? t.artist : "Click a track below to start"}</div>
+          <div className="font-display text-3xl font-extrabold tracking-tight md:text-5xl">{m.loaded ? t.title : "No track loaded"}</div>
+          <div className="mt-2 font-serif text-xl italic text-muted-foreground">{m.loaded ? t.artist : "Click a track below to start"}</div>
         </div>
         <div className="space-y-3">
           <Bar />

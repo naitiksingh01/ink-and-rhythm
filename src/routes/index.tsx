@@ -81,17 +81,16 @@ function Index() {
           </div>
           {ready && (
             <h1 className="font-display font-extrabold uppercase leading-[0.82] tracking-tighter" style={{ transform: "translate(var(--mx,0),var(--my,0))", transition: "transform .4s ease-out" }}>
-              <span className="block overflow-hidden text-[16vw] md:text-[12vw]"><span className="rise-line">I build</span></span>
-              <span className="block overflow-hidden text-[16vw] md:text-[12vw]">
-                <span className="rise-line text-outline" style={{ animationDelay: ".12s" }}>things</span>{" "}
-                <span className="rise-line font-serif font-normal normal-case italic tracking-normal" style={{ animationDelay: ".2s" }}>that</span>
+              <span className="block overflow-hidden text-[11vw] md:text-[7vw]"><span className="rise-line">Engineered</span>{" "}<span className="rise-line font-serif font-normal normal-case italic tracking-normal" style={{ animationDelay: ".1s" }}>for</span></span>
+              <span className="block overflow-hidden text-[11vw] md:text-[7vw]">
+                <span className="rise-line text-outline" style={{ animationDelay: ".18s" }}>speed</span>{" "}
+                <span className="rise-line" style={{ animationDelay: ".26s" }}>&amp; precision.</span>
               </span>
-              <span className="block overflow-hidden text-[16vw] md:text-[12vw]"><span className="rise-line" style={{ animationDelay: ".28s" }}>don't break.</span></span>
             </h1>
           )}
           <div className="mt-10 grid gap-8 border-t pt-6 md:grid-cols-3">
             <p className="text-sm leading-relaxed text-muted-foreground md:col-span-2 md:max-w-xl">
-              {ready && <Scramble text="Naitik Singh Bhadoriya" className="text-foreground" />} — high-performance C++ systems meets modern React interfaces. Obsessed with precision, speed, and software that feels inevitable.
+              {ready && <Scramble text="Naitik Singh Bhadoriya" className="text-foreground" />} — full-stack developer writing C++ where it counts and React where it shows. I turn hard problems into fast, quiet, reliable software.
             </p>
             <div className="flex gap-3 md:justify-end">
               <a href="#work" className="border bg-foreground px-6 py-3 text-xs uppercase tracking-widest text-background transition hover:bg-transparent hover:text-foreground">View work ↘</a>
@@ -101,26 +100,26 @@ function Index() {
         </section>
 
         {/* MARQUEE */}
-        <div className="-rotate-2 border-y bg-foreground py-4 text-background">
-          <div className="flex w-max animate-marquee gap-10 whitespace-nowrap font-display text-3xl font-extrabold uppercase md:text-5xl">
+        <div className="-rotate-1 border-y bg-foreground py-4 text-background">
+          <div className="flex w-max animate-marquee gap-10 whitespace-nowrap font-display text-xl font-bold uppercase md:text-2xl">
             {[...STACK, ...STACK].map((s, i) => <span key={i} className="flex items-center gap-10">{s}<span>✦</span></span>)}
           </div>
         </div>
 
         {/* ABOUT */}
-        <section id="about" className="px-6 py-32 md:px-10">
+        <section id="about" className="px-6 py-24 md:px-10">
           <Label cmd="whoami" />
           <Reveal>
-            <h2 className="max-w-5xl font-display text-5xl font-bold leading-[0.95] tracking-tight md:text-8xl">
-              Not just code. <span className="font-serif font-normal italic text-muted-foreground">Engineering.</span>
+            <h2 className="max-w-5xl font-display text-4xl font-bold leading-[0.95] tracking-tight md:text-6xl">
+              Code is easy. <span className="font-serif font-normal italic text-muted-foreground">Craft is the point.</span>
             </h2>
           </Reveal>
           <div className="mt-16 grid gap-12 md:grid-cols-2">
             <Reveal delay={100}>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                I'm a CS student and developer focused on software that performs under pressure — low-level systems in C++ or polished full-stack products with Next.js and TypeScript. I care about clean architecture, measurable performance, and interfaces that feel sharp.
+                I'm a Computer Science student from Indore who likes working close to the metal and close to the user. Some days that means shaving milliseconds off a C++ routine; other days it's getting a Next.js interface to feel effortless. Either way: clean architecture, honest benchmarks, sharp details.
               </p>
-              <blockquote className="mt-10 border-l-2 border-foreground pl-6 font-serif text-3xl italic">
+              <blockquote className="mt-10 border-l-2 border-foreground pl-6 font-serif text-2xl italic">
                 "Make it work, make it right, make it fast."
                 <footer className="mt-2 font-mono text-xs not-italic text-muted-foreground">— Kent Beck</footer>
               </blockquote>
@@ -136,11 +135,11 @@ function Index() {
         </section>
 
         {/* MANIFESTO */}
-        <section className="border-y px-6 py-32 md:px-10">
+        <section className="border-y px-6 py-24 md:px-10">
           <Label cmd="cat manifesto.txt" />
           {[["Ship it clean.", "Ship it fast.", "Ship it once."], ["If it isn't measured,", "it isn't", "engineering."], ["Break the build —", "never", "the trust."]].map((l, i) => (
             <Reveal key={i} delay={i * 80}>
-              <p className="font-display text-4xl font-extrabold uppercase leading-[1.05] tracking-tight md:text-7xl">
+              <p className="font-display text-3xl font-extrabold uppercase leading-[1.1] tracking-tight md:text-5xl">
                 {l[0]} <span className="text-outline">{l[1]}</span> <span className="font-serif font-normal normal-case italic">{l[2]}</span>
               </p>
             </Reveal>
@@ -148,16 +147,16 @@ function Index() {
         </section>
 
         {/* WORK */}
-        <section id="work" className="px-6 py-32 md:px-10">
+        <section id="work" className="px-6 py-24 md:px-10">
           <Label cmd="ls ~/projects" />
-          <Reveal><h2 className="mb-16 font-display text-5xl font-bold tracking-tight md:text-8xl">Selected <span className="font-serif font-normal italic">work</span></h2></Reveal>
+          <Reveal><h2 className="mb-16 font-display text-4xl font-bold tracking-tight md:text-6xl">Selected <span className="font-serif font-normal italic">work</span></h2></Reveal>
           <div className="border-t">
             {PROJECTS.map((p) => (
               <Reveal key={p.n}>
                 <a href="#contact" className="group relative grid grid-cols-[3rem_1fr] items-baseline gap-4 overflow-hidden border-b py-10 md:grid-cols-[5rem_1fr_1fr_6rem]">
                   <span className="absolute inset-0 -z-10 origin-bottom scale-y-0 bg-foreground transition-transform duration-500 group-hover:scale-y-100" />
                   <span className="text-xs text-muted-foreground group-hover:text-background">{p.n}</span>
-                  <span className="font-display text-4xl font-extrabold uppercase tracking-tight transition-all duration-500 group-hover:translate-x-4 group-hover:text-background md:text-6xl">{p.name}</span>
+                  <span className="font-display text-2xl font-extrabold uppercase tracking-tight transition-all duration-500 group-hover:translate-x-4 group-hover:text-background md:text-4xl">{p.name}</span>
                   <span className="col-start-2 text-sm text-muted-foreground group-hover:text-background md:col-start-auto">
                     {p.desc}
                     <span className="mt-3 flex flex-wrap gap-2">{p.tags.map((t) => <span key={t} className="border px-2 py-0.5 text-[10px] uppercase group-hover:border-background">{t}</span>)}</span>
@@ -170,14 +169,14 @@ function Index() {
         </section>
 
         {/* HISTORY + STACK */}
-        <section id="stack" className="grid gap-20 border-t px-6 py-32 md:grid-cols-2 md:px-10">
+        <section id="stack" className="grid gap-20 border-t px-6 py-24 md:grid-cols-2 md:px-10">
           <div>
             <Label cmd="history" />
             {[["2025 — now", "Full Stack Developer", "Production apps with Next.js 15, TypeScript and TanStack Query. Architecture and performance first.", "Freelance"], ["ongoing", "Computer Science", "DSA, systems design, operating systems, competitive programming. Heavy C++ focus.", "Student"]].map(([d, t, s, r], i) => (
               <Reveal key={t} delay={i * 100} className="relative border-l py-6 pl-8">
                 <span className="absolute -left-[5px] top-8 h-2.5 w-2.5 rounded-full bg-foreground" />
                 <div className="text-xs text-muted-foreground">{d} · {r}</div>
-                <div className="mt-2 font-display text-3xl font-bold">{t}</div>
+                <div className="mt-2 font-display text-2xl font-bold">{t}</div>
                 <p className="mt-2 text-sm text-muted-foreground">{s}</p>
               </Reveal>
             ))}
@@ -200,24 +199,24 @@ function Index() {
         </section>
 
         {/* MUSIC */}
-        <section id="music" className="border-t px-6 py-32 md:px-10">
+        <section id="music" className="border-t px-6 py-24 md:px-10">
           <Label cmd="afplay --now-playing" />
-          <Reveal><h2 className="mb-16 font-display text-5xl font-bold tracking-tight md:text-8xl">On <span className="font-serif font-normal italic">repeat</span></h2></Reveal>
+          <Reveal><h2 className="mb-16 font-display text-4xl font-bold tracking-tight md:text-6xl">On <span className="font-serif font-normal italic">repeat</span></h2></Reveal>
           <Reveal><OnRepeat /></Reveal>
         </section>
 
         {/* CONTACT */}
-        <section id="contact" className="border-t px-6 py-32 md:px-10">
+        <section id="contact" className="border-t px-6 py-24 md:px-10">
           <Label cmd="contact --send" />
           <Reveal>
-            <h2 className="font-display text-[13vw] font-extrabold uppercase leading-[0.85] tracking-tighter md:text-[9vw]">
-              Let's build<br /><span className="font-serif font-normal normal-case italic">something</span> <span className="text-outline">hard.</span>
+            <h2 className="font-display text-[10vw] font-extrabold uppercase leading-[0.9] tracking-tighter md:text-[5.5vw]">
+              Got a hard<br /><span className="font-serif font-normal normal-case italic">problem?</span> <span className="text-outline">Let's talk.</span>
             </h2>
           </Reveal>
           <div className="mt-16 grid gap-12 md:grid-cols-2">
             <div className="space-y-6 text-sm">
               <p className="max-w-md text-muted-foreground">Open to new opportunities, collaborations, and difficult problems. Drop a message — I read everything.</p>
-              <a href="mailto:naitiksinghh01@gmail.com" className="block font-display text-2xl font-bold underline-offset-8 hover:underline md:text-4xl">naitiksinghh01@gmail.com</a>
+              <a href="mailto:naitiksinghh01@gmail.com" className="block font-display text-xl font-bold underline-offset-8 hover:underline md:text-3xl">naitiksinghh01@gmail.com</a>
               <div className="text-muted-foreground">Indore, India · available for work</div>
             </div>
             <form

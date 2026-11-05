@@ -126,7 +126,7 @@ export function Intro({ onDone }: { onDone: () => void }) {
         <span className="animate-blink">█</span>
       </div>
       <div className="flex items-end justify-between">
-        <div className="font-display text-[28vw] font-extrabold leading-[0.8] tracking-tighter md:text-[20vw]">
+        <div className="font-display text-[22vw] font-extrabold leading-[0.8] tracking-tighter md:text-[12vw]">
           {String(n).padStart(3, "0")}
         </div>
         <div className="mb-4 hidden font-serif text-3xl italic md:block">Naitik Singh</div>
