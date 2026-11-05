@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Cursor, HoverScramble, Intro, Reveal, Scramble } from "@/components/site/fx";
-import { MiniPlayer, MusicProvider, OnRepeat } from "@/components/site/music";
+import { MiniPlayer, MusicProvider, OnRepeat, useMusic } from "@/components/site/music";
+import { CommandMenu, CountUp, DotField, Magnetic, ScrollText, Tilt } from "@/components/site/advanced";
+
+function Cmd() { const m = useMusic(); return <CommandMenu onToggleMusic={m.toggle} />; }
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -70,12 +73,14 @@ function Index() {
           <nav className="hidden gap-8 text-xs uppercase tracking-[0.2em] md:flex">
             {NAV.map(([l, h]) => <a key={l} href={h} className="hover:line-through"><HoverScramble text={l} /></a>)}
           </nav>
-          <span className="text-xs text-muted-foreground"><Clock /></span>
+          <div className="flex items-center gap-4"><Cmd /><span className="text-xs text-muted-foreground"><Clock /></span></div>
         </header>
 
         {/* HERO */}
         <section id="top" ref={heroRef} onMouseMove={onHeroMove} className="relative flex min-h-screen flex-col justify-end px-6 pb-10 pt-32 md:px-10">
           <div className="grid-bg absolute inset-0 -z-10" />
+          <DotField />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-t from-background to-transparent" />
           <div className="mb-8 flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">
             <span className="h-2 w-2 animate-pulse rounded-full bg-foreground" /> available for work — indore, india
           </div>
@@ -92,8 +97,8 @@ function Index() {
               {ready && <Scramble text="Full-stack developer" className="text-foreground" />} based in Indore, India. I build web apps with React, Next.js and TypeScript, and write C++ for performance-focused work.
             </p>
             <div className="flex gap-3 md:justify-end">
-              <a href="#work" className="border bg-foreground px-6 py-3 text-xs uppercase tracking-widest text-background transition hover:bg-transparent hover:text-foreground">View work ↘</a>
-              <a href="#contact" className="border px-6 py-3 text-xs uppercase tracking-widest transition hover:bg-foreground hover:text-background">Contact</a>
+              <Magnetic><a href="#work" className="block border bg-foreground px-6 py-3 text-xs uppercase tracking-widest text-background transition hover:bg-transparent hover:text-foreground">View work ↘</a></Magnetic>
+              <Magnetic><a href="#contact" className="block border px-6 py-3 text-xs uppercase tracking-widest transition hover:bg-foreground hover:text-background">Contact</a></Magnetic>
             </div>
           </div>
         </section>
@@ -115,9 +120,7 @@ function Index() {
           </Reveal>
           <div className="mt-16 grid gap-12 md:grid-cols-2">
             <Reveal delay={100}>
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                I'm a Computer Science student and full-stack developer. I work on web apps with Next.js and TypeScript, and I use C++ for data structures, algorithms and systems work. I like clean code, fast apps and simple interfaces.
-              </p>
+              <ScrollText className="text-xl leading-relaxed md:text-2xl" text="I'm a Computer Science student and full-stack developer. I work on web apps with Next.js and TypeScript, and I use C++ for data structures, algorithms and systems work. I like clean code, fast apps and simple interfaces." />
               <blockquote className="mt-10 border-l-2 border-foreground pl-6 font-serif text-2xl italic">
                 "Make it work, make it right, make it fast."
                 <footer className="mt-2 font-mono text-xs not-italic text-muted-foreground">— Kent Beck</footer>
@@ -131,26 +134,39 @@ function Index() {
               </dl>
             </Reveal>
           </div>
+          <div className="mt-20 grid grid-cols-2 border-t md:grid-cols-4">
+            {([[3, "+", "Years coding"], [10, "+", "Projects built"], [5, "", "Languages & frameworks"], [100, "%", "Effort, every time"]] as [number, string, string][]).map(([n, suf, l]) => (
+              <div key={l} className="border-b border-r p-6 last:border-r-0">
+                <div className="font-display text-4xl font-extrabold md:text-5xl"><CountUp to={n} suffix={suf} /></div>
+                <div className="mt-2 text-xs uppercase tracking-widest text-muted-foreground">{l}</div>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* WORK */}
         <section id="work" className="px-6 py-24 md:px-10">
           <Label cmd="ls ~/projects" />
           <Reveal><h2 className="mb-16 font-display text-4xl font-bold tracking-tight md:text-6xl">Selected <span className="font-serif font-normal italic">work</span></h2></Reveal>
-          <div className="border-t">
-            {PROJECTS.map((p) => (
-              <Reveal key={p.n}>
-                <a href="#contact" className="group relative grid grid-cols-[3rem_1fr] items-baseline gap-4 overflow-hidden border-b py-10 md:grid-cols-[5rem_1fr_1fr_6rem]">
-                  <span className="absolute inset-0 -z-10 origin-bottom scale-y-0 bg-foreground transition-transform duration-500 group-hover:scale-y-100" />
-                  <span className="text-xs text-muted-foreground group-hover:text-background">{p.n}</span>
-                  <span className="font-display text-2xl font-extrabold uppercase tracking-tight transition-all duration-500 group-hover:translate-x-4 group-hover:text-background md:text-4xl">{p.name}</span>
-                  <span className="col-start-2 text-sm text-muted-foreground group-hover:text-background md:col-start-auto">
-                    {p.desc}
-                    <span className="mt-3 flex flex-wrap gap-2">{p.tags.map((t) => <span key={t} className="border px-2 py-0.5 text-[10px] uppercase group-hover:border-background">{t}</span>)}</span>
-                  </span>
-                  <span className="hidden text-right text-xs group-hover:text-background md:block">{p.year} ↗</span>
-                </a>
-              </Reveal>
+          <div className="space-y-6">
+            {PROJECTS.map((p, i) => (
+              <div key={p.n} className="sticky" style={{ top: `${96 + i * 24}px` }}>
+                <Tilt className="group border bg-card">
+                  <a href="#contact" className="grid min-h-[300px] gap-8 p-8 md:grid-cols-[1fr_1.2fr] md:p-12">
+                    <div className="flex flex-col justify-between gap-6">
+                      <span className="text-xs text-muted-foreground">{p.n} / {String(PROJECTS.length).padStart(2, "0")} — {p.year}</span>
+                      <h3 className="font-display text-3xl font-extrabold uppercase tracking-tight md:text-5xl">{p.name}</h3>
+                      <div className="flex flex-wrap gap-2">{p.tags.map((t) => <span key={t} className="border px-2 py-0.5 text-[10px] uppercase">{t}</span>)}</div>
+                    </div>
+                    <div className="flex flex-col justify-between gap-6">
+                      <div className="relative aspect-[16/9] overflow-hidden border bg-background grid-bg">
+                        <span className="absolute inset-0 grid place-items-center font-display text-7xl font-extrabold text-outline opacity-40 transition duration-700 group-hover:scale-110 group-hover:opacity-100">{p.n}</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{p.desc} <span className="text-foreground">↗</span></p>
+                    </div>
+                  </a>
+                </Tilt>
+              </div>
             ))}
           </div>
         </section>
