@@ -33,9 +33,9 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     const el = a.current!;
     if (i !== undefined && (i !== idx || !loaded)) {
       setIdx(i); setLoaded(true);
-      el.src = playlist[i].src;
+      el.src = playlist[i]!.src;
     } else if (!loaded) {
-      setLoaded(true); el.src = playlist[idx].src;
+      setLoaded(true); el.src = playlist[idx]!.src;
     }
     el.play().catch(() => {});
   };

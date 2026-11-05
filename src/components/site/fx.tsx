@@ -39,7 +39,7 @@ export function Reveal({ children, className = "", delay = 0 }: { children: Reac
     if (!el) return;
     const io = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting) {
+        if (e?.isIntersecting) {
           el.classList.add("in");
           io.disconnect();
         }
@@ -105,6 +105,7 @@ export function Intro({ onDone }: { onDone: () => void }) {
       const b = setTimeout(onDone, 1500);
       return () => { clearTimeout(a); clearTimeout(b); };
     }
+    return undefined;
   }, [n]);
   useEffect(() => {
     const skip = () => { setLeaving(true); setTimeout(onDone, 900); };
