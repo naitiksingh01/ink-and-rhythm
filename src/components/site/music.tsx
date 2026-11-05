@@ -102,7 +102,7 @@ const Btn = ({ children, onClick, label, big }: { children: ReactNode; onClick: 
 
 export function OnRepeat() {
   const m = useMusic();
-  const t = playlist[m.idx];
+  const t = playlist[m.idx]!;
   return (
     <div className="grid gap-10 md:grid-cols-[minmax(0,420px)_1fr]">
       <div className="relative aspect-square overflow-hidden border">
@@ -150,7 +150,7 @@ export function OnRepeat() {
 
 export function MiniPlayer() {
   const m = useMusic();
-  const t = playlist[m.idx];
+  const t = playlist[m.idx]!;
   return (
     <div className="fixed bottom-5 right-5 z-50 flex items-center gap-3 border bg-background/80 p-2 pr-4 backdrop-blur-md">
       <img src={t.cover} alt="" className={`h-10 w-10 rounded-full object-cover grayscale ${m.playing ? "animate-spin-slow" : ""}`} />

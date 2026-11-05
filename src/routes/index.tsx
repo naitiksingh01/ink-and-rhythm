@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const NAV = [["work", "#work"], ["about", "#about"], ["stack", "#stack"], ["music", "#music"], ["contact", "#contact"]];
+const NAV: [string, string][] = [["work", "#work"], ["about", "#about"], ["stack", "#stack"], ["music", "#music"], ["contact", "#contact"]];
 const STACK = ["C++", "TypeScript", "Next.js 15", "React 19", "Systems Design", "TanStack Query", "Node / Express", "Python", "Tailwind"];
 const PROJECTS = [
   { n: "01", name: "Project Alpha", desc: "Full-stack application in active development. Precision architecture, deliberate UI.", tags: ["Next.js", "TypeScript", "TanStack"], year: "2026" },
