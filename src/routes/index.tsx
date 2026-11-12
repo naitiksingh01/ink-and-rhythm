@@ -106,9 +106,9 @@ function Index() {
               <p>Hey, I’m Naitik. I’m a Computer Science student and full-stack developer from Indore, India.</p>
               <p>
                 I build{" "}
-                <InlinePreview href="#work" preview={<ProjectVisual type="alpha" />}>web applications</InlinePreview>{" "}
+                <InlinePreview href="#work" preview={<PreviewArt type="alpha" />}>web applications</InlinePreview>{" "}
                 with React, Next.js and TypeScript. I also use{" "}
-                <InlinePreview href="#work" preview={<ProjectVisual type="system" />}>C++</InlinePreview>{" "}
+                <InlinePreview href="#work" preview={<PreviewArt type="system" />}>C++</InlinePreview>{" "}
                 for data structures, algorithms and performance-focused work.
               </p>
               <p>
