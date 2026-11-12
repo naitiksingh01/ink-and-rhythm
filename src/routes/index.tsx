@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUpRight, Asterisk, MapPin } from "lucide-react";
 import { Intro, Reveal } from "@/components/site/fx";
 import { MiniPlayer, MusicProvider, OnRepeat, useMusic } from "@/components/site/music";
