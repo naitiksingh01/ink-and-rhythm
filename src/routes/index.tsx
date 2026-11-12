@@ -4,7 +4,7 @@ import { ArrowUpRight, Asterisk, MapPin } from "lucide-react";
 import { Intro, Reveal } from "@/components/site/fx";
 import { MiniPlayer, MusicProvider, OnRepeat, useMusic } from "@/components/site/music";
 import { AmbientShapes, CommandMenu, CopyEmail, InlinePreview, ThemeToggle } from "@/components/site/advanced";
-import { ProjectVisual } from "@/components/site/project-visual";
+import { PreviewArt, ProjectVisual } from "@/components/site/project-visual";
 
 function QuickMenu() {
   const music = useMusic();

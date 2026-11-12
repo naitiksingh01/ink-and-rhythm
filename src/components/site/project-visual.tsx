@@ -1,3 +1,29 @@
+export function PreviewArt({ type }: { type: "alpha" | "system" }) {
+  if (type === "alpha") {
+    return (
+      <svg viewBox="0 0 320 200" className="h-full w-full bg-foreground text-background" aria-hidden>
+        <rect x="24" y="18" width="272" height="164" rx="12" fill="var(--background)" />
+        <circle cx="40" cy="33" r="2" fill="var(--foreground)" opacity=".25" />
+        <circle cx="48" cy="33" r="2" fill="var(--foreground)" opacity=".25" />
+        <path d="M24 43 H296 M68 43 V182" stroke="var(--foreground)" opacity=".12" />
+        <text x="84" y="66" fill="var(--foreground)" fontSize="10" fontFamily="sans-serif">Application dashboard</text>
+        {[0, 1, 2].map((item) => <rect key={item} x={84 + item * 65} y="78" width="55" height="29" rx="5" fill="none" stroke="var(--foreground)" strokeOpacity=".15" />)}
+        <path d="M84 151 C110 144 111 119 139 132 S181 157 201 125 S242 116 278 94" fill="none" stroke="var(--foreground)" strokeWidth="2" />
+        <path d="M84 164 H278" stroke="var(--foreground)" opacity=".1" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 320 200" className="h-full w-full bg-foreground text-background" aria-hidden>
+      {[30, 52, 74].map((r) => <circle key={r} cx="244" cy="100" r={r} fill="none" stroke="currentColor" opacity=".14" />)}
+      <text x="24" y="42" fill="currentColor" fontSize="8" fontFamily="monospace" opacity=".6">SYSTEMS / CPP</text>
+      <text x="24" y="78" fill="currentColor" fontSize="9" fontFamily="monospace">template &lt;typename T&gt;</text>
+      <text x="24" y="96" fill="currentColor" fontSize="9" fontFamily="monospace" opacity=".65">auto main() -&gt; int;</text>
+      <text x="24" y="158" fill="currentColor" fontSize="34" fontWeight="600" fontFamily="sans-serif">C++</text>
+    </svg>
+  );
+}
+
 export function ProjectVisual({ type }: { type: "alpha" | "beta" | "system" }) {
   if (type === "alpha") {
     return (
