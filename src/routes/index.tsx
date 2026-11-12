@@ -1,18 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-import { Cursor, HoverScramble, Intro, Reveal, Scramble } from "@/components/site/fx";
+import { useState } from "react";
+import { ArrowUpRight, Asterisk, MapPin } from "lucide-react";
+import { Intro, Reveal } from "@/components/site/fx";
 import { MiniPlayer, MusicProvider, OnRepeat, useMusic } from "@/components/site/music";
-import { CommandMenu, CountUp, DotField, Magnetic, ScrollText, Tilt } from "@/components/site/advanced";
+import { AmbientShapes, CommandMenu, CopyEmail, InlinePreview, ThemeToggle } from "@/components/site/advanced";
+import { ProjectVisual } from "@/components/site/project-visual";
 
-function Cmd() { const m = useMusic(); return <CommandMenu onToggleMusic={m.toggle} />; }
+function QuickMenu() {
+  const music = useMusic();
+  return <CommandMenu onToggleMusic={music.toggle} />;
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Naitik Singh Bhadoriya — Full Stack & Systems Engineer" },
-      { name: "description", content: "C++ systems meets modern React interfaces. Portfolio of Naitik Singh Bhadoriya, developer from Indore, India." },
-      { property: "og:title", content: "Naitik Singh Bhadoriya — Engineer" },
-      { property: "og:description", content: "High-performance C++ systems meets modern React interfaces." },
+      { title: "Naitik Singh — Full-stack developer" },
+      { name: "description", content: "Portfolio of Naitik Singh Bhadoriya, a Computer Science student and full-stack developer from Indore, India." },
+      { property: "og:title", content: "Naitik Singh — Full-stack developer" },
+      { property: "og:description", content: "Web applications, systems work and selected projects by Naitik Singh Bhadoriya." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -20,229 +25,176 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const NAV: [string, string][] = [["work", "#work"], ["about", "#about"], ["stack", "#stack"], ["music", "#music"], ["contact", "#contact"]];
-const STACK = ["C++", "TypeScript", "Next.js 15", "React 19", "Systems Design", "TanStack Query", "Node / Express", "Python", "Tailwind"];
+const NAV = [["Work", "#work"], ["About", "#about"], ["Music", "#music"], ["Contact", "#contact"]];
+const STACK = ["React", "Next.js", "TypeScript", "C++", "Node.js", "Express", "TanStack Query", "Tailwind CSS", "Python"];
 const PROJECTS = [
-  { n: "01", name: "Project Alpha", desc: "Full-stack application in active development. Precision architecture, deliberate UI.", tags: ["Next.js", "TypeScript", "TanStack"], year: "2026" },
-  { n: "02", name: "Project Beta", desc: "Backend-heavy system focused on performance and real-time data.", tags: ["React", "Node", "Express"], year: "2025" },
-  { n: "03", name: "System Project", desc: "High-performance C++ work. Currently in stealth.", tags: ["C++", "Systems"], year: "stealth" },
+  {
+    name: "Project Alpha",
+    type: "alpha" as const,
+    year: "2026",
+    description: "A full-stack web application in active development, with a focus on clear architecture and a simple interface.",
+    tags: ["Next.js", "TypeScript", "TanStack"],
+  },
+  {
+    name: "Project Beta",
+    type: "beta" as const,
+    year: "2025",
+    description: "A backend-focused project exploring real-time data, application performance and reliable data flow.",
+    tags: ["React", "Node.js", "Express"],
+  },
+  {
+    name: "System Project",
+    type: "system" as const,
+    year: "Stealth",
+    description: "Performance-focused C++ work. The details are private for now.",
+    tags: ["C++", "Systems", "Algorithms"],
+  },
 ];
 
 function Clock() {
-  const [t, setT] = useState("");
-  useEffect(() => {
-    const f = () => setT(new Date().toLocaleTimeString("en-GB", { timeZone: "Asia/Kolkata" }));
-    f(); const id = setInterval(f, 1000); return () => clearInterval(id);
-  }, []);
-  return <span>{t} IST</span>;
-}
-
-function Label({ cmd }: { cmd: string }) {
-  return <div className="mb-8 text-xs uppercase tracking-[0.3em] text-muted-foreground">$ {cmd}<span className="animate-blink">_</span></div>;
+  const [time, setTime] = useState("");
+  useState(() => {
+    if (typeof window === "undefined") return undefined;
+    const update = () => setTime(new Date().toLocaleTimeString("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit" }));
+    update();
+    return undefined;
+  });
+  return <span suppressHydrationWarning>{time || "IST"}</span>;
 }
 
 function Index() {
   const [ready, setReady] = useState(false);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const [scroll, setScroll] = useState(0);
-
-  useEffect(() => {
-    const s = () => setScroll(window.scrollY);
-    window.addEventListener("scroll", s, { passive: true });
-    return () => window.removeEventListener("scroll", s);
-  }, []);
-
-  const onHeroMove = (e: React.MouseEvent) => {
-    const el = heroRef.current; if (!el) return;
-    const r = el.getBoundingClientRect();
-    el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width - 0.5) * 30}px`);
-    el.style.setProperty("--my", `${((e.clientY - r.top) / r.height - 0.5) * 30}px`);
-  };
 
   return (
     <MusicProvider>
-      <div className="grain min-h-screen overflow-x-hidden">
+      <div className="grain min-h-screen overflow-x-hidden bg-background text-foreground">
         {!ready && <Intro onDone={() => setReady(true)} />}
-        <Cursor />
+        <AmbientShapes />
 
-        {/* progress */}
-        <div className="fixed left-0 top-0 z-50 h-px bg-foreground" style={{ width: `${typeof document !== "undefined" ? (scroll / Math.max(1, document.body.scrollHeight - window.innerHeight)) * 100 : 0}%` }} />
-
-        <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-6 py-5 mix-blend-difference md:px-10">
-          <a href="#top" className="font-display text-lg font-extrabold">NSB<span className="text-muted-foreground">©26</span></a>
-          <nav className="hidden gap-8 text-xs uppercase tracking-[0.2em] md:flex">
-            {NAV.map(([l, h]) => <a key={l} href={h} className="hover:line-through"><HoverScramble text={l} /></a>)}
-          </nav>
-          <div className="flex items-center gap-4"><Cmd /><span className="text-xs text-muted-foreground"><Clock /></span></div>
+        <header className="fixed inset-x-0 top-0 z-40 border-b bg-background/85 backdrop-blur-xl">
+          <div className="mx-auto flex h-16 max-w-[880px] items-center justify-between px-5 sm:px-6">
+            <a href="#top" aria-label="Back to top" className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-secondary">
+              <Asterisk size={27} strokeWidth={1.8} />
+            </a>
+            <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-7 text-sm md:flex" aria-label="Main navigation">
+              {NAV.map(([label, href]) => (
+                <a key={label} href={href} className="text-muted-foreground transition hover:text-foreground">{label}</a>
+              ))}
+            </nav>
+            <div className="flex items-center gap-1.5">
+              <ThemeToggle />
+              <QuickMenu />
+            </div>
+          </div>
         </header>
 
-        {/* HERO */}
-        <section id="top" ref={heroRef} onMouseMove={onHeroMove} className="relative flex min-h-screen flex-col justify-end px-6 pb-10 pt-32 md:px-10">
-          <div className="grid-bg absolute inset-0 -z-10" />
-          <DotField />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-t from-background to-transparent" />
-          <div className="mb-8 flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-foreground" /> available for work — indore, india
-          </div>
-          {ready && (
-            <h1 className="font-display font-extrabold uppercase leading-[0.82] tracking-tighter" style={{ transform: "translate(var(--mx,0),var(--my,0))", transition: "transform .4s ease-out" }}>
-              <span className="block overflow-hidden text-[11vw] md:text-[7vw]"><span className="rise-line">Naitik Singh</span></span>
-              <span className="block overflow-hidden text-[11vw] md:text-[7vw]">
-                <span className="rise-line text-outline" style={{ animationDelay: ".15s" }}>Bhadoriya</span>
-              </span>
-            </h1>
-          )}
-          <div className="mt-10 grid gap-8 border-t pt-6 md:grid-cols-3">
-            <p className="text-sm leading-relaxed text-muted-foreground md:col-span-2 md:max-w-xl">
-              {ready && <Scramble text="Full-stack developer" className="text-foreground" />} based in Indore, India. I build web apps with React, Next.js and TypeScript, and write C++ for performance-focused work.
-            </p>
-            <div className="flex gap-3 md:justify-end">
-              <Magnetic><a href="#work" className="block border bg-foreground px-6 py-3 text-xs uppercase tracking-widest text-background transition hover:bg-transparent hover:text-foreground">View work ↘</a></Magnetic>
-              <Magnetic><a href="#contact" className="block border px-6 py-3 text-xs uppercase tracking-widest transition hover:bg-foreground hover:text-background">Contact</a></Magnetic>
-            </div>
-          </div>
-        </section>
-
-        {/* MARQUEE */}
-        <div className="-rotate-1 border-y bg-foreground py-4 text-background">
-          <div className="flex w-max animate-marquee gap-10 whitespace-nowrap font-display text-xl font-bold uppercase md:text-2xl">
-            {[...STACK, ...STACK].map((s, i) => <span key={i} className="flex items-center gap-10">{s}<span>✦</span></span>)}
-          </div>
-        </div>
-
-        {/* ABOUT */}
-        <section id="about" className="px-6 py-24 md:px-10">
-          <Label cmd="whoami" />
-          <Reveal>
-            <h2 className="max-w-5xl font-display text-4xl font-bold leading-[0.95] tracking-tight md:text-6xl">
-              About <span className="font-serif font-normal italic text-muted-foreground">me</span>
-            </h2>
-          </Reveal>
-          <div className="mt-16 grid gap-12 md:grid-cols-2">
-            <Reveal delay={100}>
-              <ScrollText className="text-xl leading-relaxed md:text-2xl" text="I'm a Computer Science student and full-stack developer. I work on web apps with Next.js and TypeScript, and I use C++ for data structures, algorithms and systems work. I like clean code, fast apps and simple interfaces." />
-              <blockquote className="mt-10 border-l-2 border-foreground pl-6 font-serif text-2xl italic">
-                "Make it work, make it right, make it fast."
-                <footer className="mt-2 font-mono text-xs not-italic text-muted-foreground">— Kent Beck</footer>
-              </blockquote>
-            </Reveal>
-            <Reveal delay={200}>
-              <dl className="divide-y border-y text-sm">
-                {[["role", "Full Stack Developer"], ["focus", "Systems · Interfaces"], ["based in", "Indore, India"], ["education", "Computer Science"], ["status", "● available"]].map(([k, v]) => (
-                  <div key={k} className="flex justify-between py-4"><dt className="text-muted-foreground">{k}</dt><dd>{v}</dd></div>
-                ))}
-              </dl>
-            </Reveal>
-          </div>
-          <div className="mt-20 grid grid-cols-2 border-t md:grid-cols-4">
-            {([[3, "+", "Years coding"], [10, "+", "Projects built"], [5, "", "Languages & frameworks"], [100, "%", "Effort, every time"]] as [number, string, string][]).map(([n, suf, l]) => (
-              <div key={l} className="border-b border-r p-6 last:border-r-0">
-                <div className="font-display text-4xl font-extrabold md:text-5xl"><CountUp to={n} suffix={suf} /></div>
-                <div className="mt-2 text-xs uppercase tracking-widest text-muted-foreground">{l}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* WORK */}
-        <section id="work" className="px-6 py-24 md:px-10">
-          <Label cmd="ls ~/projects" />
-          <Reveal><h2 className="mb-16 font-display text-4xl font-bold tracking-tight md:text-6xl">Selected <span className="font-serif font-normal italic">work</span></h2></Reveal>
-          <div className="space-y-6">
-            {PROJECTS.map((p, i) => (
-              <div key={p.n} className="sticky" style={{ top: `${96 + i * 24}px` }}>
-                <Tilt className="group border bg-card">
-                  <a href="#contact" className="grid min-h-[300px] gap-8 p-8 md:grid-cols-[1fr_1.2fr] md:p-12">
-                    <div className="flex flex-col justify-between gap-6">
-                      <span className="text-xs text-muted-foreground">{p.n} / {String(PROJECTS.length).padStart(2, "0")} — {p.year}</span>
-                      <h3 className="font-display text-3xl font-extrabold uppercase tracking-tight md:text-5xl">{p.name}</h3>
-                      <div className="flex flex-wrap gap-2">{p.tags.map((t) => <span key={t} className="border px-2 py-0.5 text-[10px] uppercase">{t}</span>)}</div>
-                    </div>
-                    <div className="flex flex-col justify-between gap-6">
-                      <div className="relative aspect-[16/9] overflow-hidden border bg-background grid-bg">
-                        <span className="absolute inset-0 grid place-items-center font-display text-7xl font-extrabold text-outline opacity-40 transition duration-700 group-hover:scale-110 group-hover:opacity-100">{p.n}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{p.desc} <span className="text-foreground">↗</span></p>
-                    </div>
-                  </a>
-                </Tilt>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* HISTORY + STACK */}
-        <section id="stack" className="grid gap-20 border-t px-6 py-24 md:grid-cols-2 md:px-10">
-          <div>
-            <Label cmd="history" />
-            {[["2025 — now", "Full Stack Developer", "Building web applications with Next.js, TypeScript and TanStack Query.", "Freelance"], ["ongoing", "Computer Science", "Studying data structures, algorithms, operating systems and systems design, mostly in C++.", "Student"]].map(([d, t, s, r], i) => (
-              <Reveal key={t} delay={i * 100} className="relative border-l py-6 pl-8">
-                <span className="absolute -left-[5px] top-8 h-2.5 w-2.5 rounded-full bg-foreground" />
-                <div className="text-xs text-muted-foreground">{d} · {r}</div>
-                <div className="mt-2 font-display text-2xl font-bold">{t}</div>
-                <p className="mt-2 text-sm text-muted-foreground">{s}</p>
-              </Reveal>
-            ))}
-          </div>
-          <div>
-            <Label cmd="cat stack.json" />
+        <main id="main-content" className="mx-auto max-w-[720px] px-5 sm:px-6">
+          <section id="top" className="pb-16 pt-36 sm:pt-44">
             <Reveal>
-              <pre className="overflow-x-auto border bg-card p-6 text-sm leading-7">
-{`{
-  `}<span className="text-muted-foreground">"languages"</span>{`:  ["C++", "TypeScript", "Python"],
-  `}<span className="text-muted-foreground">"frameworks"</span>{`: ["React", "Next.js 15",
-                 "TanStack Query", "Node/Express",
-                 "Tailwind"],
-  `}<span className="text-muted-foreground">"tools"</span>{`:      ["Git", "Vercel", "Figma",
-                 "Systems Design"]
-}`}
-              </pre>
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <h1 className="font-hand text-6xl leading-[.9] tracking-tight sm:text-7xl">naitik singh</h1>
+                  <p className="mt-4 text-sm text-muted-foreground">Full-stack developer · Indore, India</p>
+                </div>
+                <div className="mb-1 hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
+                  <span className="h-1.5 w-1.5 rounded-full bg-foreground" /> Available for work
+                </div>
+              </div>
             </Reveal>
-          </div>
-        </section>
 
-        {/* MUSIC */}
-        <section id="music" className="border-t px-6 py-24 md:px-10">
-          <Label cmd="afplay --now-playing" />
-          <Reveal><h2 className="mb-16 font-display text-4xl font-bold tracking-tight md:text-6xl">On <span className="font-serif font-normal italic">repeat</span></h2></Reveal>
-          <Reveal><OnRepeat /></Reveal>
-        </section>
+            <Reveal delay={100} className="mt-10 space-y-5 text-[17px] leading-[1.75] tracking-[-0.01em]">
+              <p>Hey, I’m Naitik. I’m a Computer Science student and full-stack developer from Indore, India.</p>
+              <p>
+                I build{" "}
+                <InlinePreview href="#work" preview={<ProjectVisual type="alpha" />}>web applications</InlinePreview>{" "}
+                with React, Next.js and TypeScript. I also use{" "}
+                <InlinePreview href="#work" preview={<ProjectVisual type="system" />}>C++</InlinePreview>{" "}
+                for data structures, algorithms and performance-focused work.
+              </p>
+              <p>
+                I care about simple interfaces, readable code and software that feels fast. Away from the editor, there’s usually{" "}
+                <a href="#music" className="underline decoration-border underline-offset-4 transition hover:decoration-foreground">music playing</a>.
+              </p>
+              <p className="text-muted-foreground">Here’s some of what I’ve been working on.</p>
+            </Reveal>
+          </section>
 
-        {/* CONTACT */}
-        <section id="contact" className="border-t px-6 py-24 md:px-10">
-          <Label cmd="contact --send" />
-          <Reveal>
-            <h2 className="font-display text-[10vw] font-extrabold uppercase leading-[0.9] tracking-tighter md:text-[5.5vw]">
-              Get in<br /><span className="text-outline">touch</span>
-            </h2>
-          </Reveal>
-          <div className="mt-16 grid gap-12 md:grid-cols-2">
-            <div className="space-y-6 text-sm">
-              <p className="max-w-md text-muted-foreground">Open to freelance work, internships and collaborations. Send me a message and I'll get back to you.</p>
-              <a href="mailto:naitiksinghh01@gmail.com" className="block font-display text-xl font-bold underline-offset-8 hover:underline md:text-3xl">naitiksinghh01@gmail.com</a>
-              <div className="text-muted-foreground">Indore, India · available for work</div>
-            </div>
-            <form
-              className="space-y-6"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const f = new FormData(e.currentTarget);
-                window.location.href = `mailto:naitiksinghh01@gmail.com?subject=${encodeURIComponent(`Hello from ${f.get("name")}`)}&body=${encodeURIComponent(`${f.get("message")}\n\n— ${f.get("email")}`)}`;
-              }}
-            >
-              {["name", "email"].map((n) => (
-                <input key={n} name={n} type={n === "email" ? "email" : "text"} required placeholder={n} className="w-full border-b bg-transparent py-3 outline-none placeholder:text-muted-foreground focus:border-foreground" />
+          <section id="work" aria-labelledby="work-title" className="py-14">
+            <Reveal>
+              <div className="mb-7 flex items-center justify-between">
+                <h2 id="work-title" className="text-xl font-medium tracking-tight">Selected work</h2>
+                <span className="text-sm text-muted-foreground">3 projects</span>
+              </div>
+            </Reveal>
+            <div className="space-y-14">
+              {PROJECTS.map((project, index) => (
+                <Reveal key={project.name} delay={index * 60}>
+                  <article className="group">
+                    <div className="mb-3 flex items-center justify-between gap-4">
+                      <h3 className="text-base font-medium">{project.name}</h3>
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{project.year}</span>
+                    </div>
+                    <div className="aspect-[16/10] overflow-hidden rounded-2xl border bg-secondary">
+                      <div className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.018]">
+                        <ProjectVisual type={project.type} />
+                      </div>
+                    </div>
+                    <p className="mt-4 text-sm leading-6 text-muted-foreground">{project.description}</p>
+                    <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2" aria-label={`${project.name} technologies`}>
+                      {project.tags.map((tag) => <li key={tag} className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">{tag}</li>)}
+                    </ul>
+                  </article>
+                </Reveal>
               ))}
-              <textarea name="message" required rows={4} placeholder="message" className="w-full resize-none border-b bg-transparent py-3 outline-none placeholder:text-muted-foreground focus:border-foreground" />
-              <button className="w-full border bg-foreground py-4 text-xs uppercase tracking-[0.3em] text-background transition hover:bg-transparent hover:text-foreground">Send message →</button>
-            </form>
-          </div>
-        </section>
+            </div>
+          </section>
 
-        <footer className="flex flex-wrap justify-between gap-4 border-t px-6 py-8 text-xs text-muted-foreground md:px-10">
+          <section id="about" aria-labelledby="about-title" className="border-t py-16">
+            <Reveal>
+              <h2 id="about-title" className="text-xl font-medium tracking-tight">About</h2>
+              <div className="mt-6 space-y-5 text-[16px] leading-7 text-muted-foreground">
+                <p>I’m studying Computer Science and building web projects alongside my coursework. Most of my work sits between product interfaces and the systems behind them.</p>
+                <p>I’m open to freelance projects, internships and collaborations.</p>
+              </div>
+              <div className="mt-8">
+                <h3 className="mb-4 font-mono text-[10px] uppercase tracking-[.18em] text-muted-foreground">Tools I work with</h3>
+                <ul className="flex flex-wrap gap-2">
+                  {STACK.map((item) => <li key={item} className="rounded-full border px-3 py-1.5 text-xs">{item}</li>)}
+                </ul>
+              </div>
+              <div className="mt-8 flex items-center gap-2 text-sm text-muted-foreground">
+                <MapPin size={14} /> Indore, India <span className="mx-1">·</span> <Clock /> IST
+              </div>
+            </Reveal>
+          </section>
+
+          <section id="music" aria-labelledby="music-title" className="border-t py-16">
+            <Reveal>
+              <div className="mb-8">
+                <h2 id="music-title" className="text-xl font-medium tracking-tight">On repeat</h2>
+                <p className="mt-2 text-sm text-muted-foreground">Three tracks I keep coming back to.</p>
+              </div>
+              <OnRepeat />
+            </Reveal>
+          </section>
+
+          <section id="contact" aria-labelledby="contact-title" className="border-t py-20">
+            <Reveal>
+              <h2 id="contact-title" className="text-2xl font-medium tracking-tight">Get in touch</h2>
+              <p className="mt-3 max-w-md text-[15px] leading-6 text-muted-foreground">Have a project, internship or collaboration in mind? Send me an email.</p>
+              <div className="mt-7 flex flex-col items-start gap-4">
+                <a href="mailto:naitiksinghh01@gmail.com" className="group inline-flex items-center gap-2 text-lg font-medium underline decoration-border underline-offset-8 transition hover:decoration-foreground">
+                  naitiksinghh01@gmail.com <ArrowUpRight size={17} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </a>
+                <CopyEmail />
+              </div>
+            </Reveal>
+          </section>
+        </main>
+
+        <footer className="mx-auto flex max-w-[720px] flex-wrap items-center justify-between gap-3 border-t px-5 py-7 text-xs text-muted-foreground sm:px-6">
           <span>© 2026 Naitik Singh Bhadoriya</span>
-          <span>Indore, India</span>
-          <a href="#top" className="hover:text-foreground">back to top ↑</a>
+          <a href="#top" className="transition hover:text-foreground">Back to top ↑</a>
         </footer>
 
         <MiniPlayer />

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { Pause, Play, SkipBack, SkipForward, Volume2 } from "lucide-react";
 import t1 from "@/assets/music/track01.mp3.asset.json";
 import t2 from "@/assets/music/track02.mp3.asset.json";
 import t3 from "@/assets/music/track03.mp3.asset.json";
@@ -71,22 +72,9 @@ export function Eq({ on, className = "" }: { on: boolean; className?: string }) 
   return (
     <span className={`inline-flex h-3 items-end gap-[2px] ${className}`}>
       {[0, 1, 2, 3].map((i) => (
-        <span key={i} className={`w-[2px] h-full bg-current ${on ? "eq-bar" : "scale-y-25"}`} style={{ animationDelay: `${i * 0.15}s` }} />
+        <span key={i} className={`h-full w-[2px] bg-current ${on ? "eq-bar" : "scale-y-25"}`} style={{ animationDelay: `${i * 0.15}s` }} />
       ))}
     </span>
-  );
-}
-
-function Bar() {
-  const m = useMusic();
-  return (
-    <div
-      className="group relative h-1 w-full bg-accent"
-      data-hover
-      onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); m.seek((e.clientX - r.left) / r.width); }}
-    >
-      <div className="h-full bg-foreground" style={{ width: `${m.dur ? (m.time / m.dur) * 100 : 0}%` }} />
-    </div>
   );
 }
 
@@ -94,7 +82,7 @@ const Btn = ({ children, onClick, label, big }: { children: ReactNode; onClick: 
   <button
     aria-label={label}
     onClick={onClick}
-    className={`grid place-items-center rounded-full border transition hover:bg-foreground hover:text-background ${big ? "h-14 w-14 bg-foreground text-background" : "h-10 w-10"}`}
+    className={`grid place-items-center rounded-full border transition hover:bg-foreground hover:text-background ${big ? "h-11 w-11 bg-foreground text-background hover:opacity-80" : "h-9 w-9"}`}
   >
     {children}
   </button>
@@ -102,41 +90,51 @@ const Btn = ({ children, onClick, label, big }: { children: ReactNode; onClick: 
 
 export function OnRepeat() {
   const m = useMusic();
-  const t = playlist[m.idx]!;
+  const track = playlist[m.idx]!;
   return (
-    <div className="grid gap-10 md:grid-cols-[minmax(0,420px)_1fr]">
-      <div className="relative aspect-square overflow-hidden border">
-        <img src={t.cover} alt={`${t.title} cover`} className={`h-full w-full object-cover grayscale transition duration-700 ${m.playing ? "scale-105" : "scale-100 opacity-70"}`} />
-        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs uppercase tracking-widest">
-          <span className="bg-background px-2 py-1">{m.playing ? "now playing" : m.loaded ? "paused" : "idle"}</span>
-          <span className="bg-background px-2 py-1"><Eq on={m.playing} /></span>
+    <div className="grid gap-7 sm:grid-cols-[210px_minmax(0,1fr)] sm:gap-8">
+      <div className="relative aspect-square overflow-hidden rounded-2xl border bg-secondary">
+        <img src={track.cover} alt={`${track.title} cover`} className={`h-full w-full object-cover grayscale transition duration-700 ${m.playing ? "scale-105 opacity-100" : "scale-100 opacity-75"}`} />
+        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[9px] uppercase tracking-widest">
+          <span className="rounded-full bg-background px-2.5 py-1.5">{m.playing ? "Now playing" : m.loaded ? "Paused" : "Select a track"}</span>
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-background"><Eq on={m.playing} /></span>
         </div>
       </div>
-      <div className="flex flex-col justify-between gap-8">
+      <div className="flex min-w-0 flex-col justify-between gap-6">
         <div>
-          <div className="font-display text-3xl font-extrabold tracking-tight md:text-5xl">{m.loaded ? t.title : "No track loaded"}</div>
-          <div className="mt-2 font-serif text-xl italic text-muted-foreground">{m.loaded ? t.artist : "Click a track below to start"}</div>
+          <div className="text-lg font-medium">{m.loaded ? track.title : "Nothing playing yet"}</div>
+          <div className="mt-1 text-sm text-muted-foreground">{m.loaded ? track.artist : "Pick one of the three tracks below."}</div>
         </div>
-        <div className="space-y-3">
-          <Bar />
-          <div className="flex justify-between text-xs text-muted-foreground"><span>{fmt(m.time)}</span><span>{fmt(m.dur)}</span></div>
-          <div className="flex items-center gap-3">
-            <Btn label="Previous" onClick={m.prev}>⏮</Btn>
-            <Btn label={m.playing ? "Pause" : "Play"} onClick={m.toggle} big>{m.playing ? "❚❚" : "▶"}</Btn>
-            <Btn label="Next" onClick={m.next}>⏭</Btn>
-            <label className="ml-auto flex items-center gap-2 text-xs text-muted-foreground">
-              vol
-              <input type="range" min={0} max={1} step={0.01} value={m.vol} onChange={(e) => m.setVol(+e.target.value)} className="w-24 accent-foreground" />
+        <div>
+          <input
+            aria-label="Seek through track"
+            type="range"
+            min={0}
+            max={m.dur || 100}
+            step={0.1}
+            value={m.dur ? m.time : 0}
+            disabled={!m.loaded}
+            onChange={(event) => m.seek(Number(event.target.value) / (m.dur || 100))}
+            className="h-1 w-full accent-foreground disabled:opacity-30"
+          />
+          <div className="mt-2 flex justify-between font-mono text-[9px] text-muted-foreground"><span>{fmt(m.time)}</span><span>{fmt(m.dur)}</span></div>
+          <div className="mt-3 flex items-center gap-2.5">
+            <Btn label="Previous track" onClick={m.prev}><SkipBack size={14} /></Btn>
+            <Btn label={m.playing ? "Pause" : "Play"} onClick={m.toggle} big>{m.playing ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" />}</Btn>
+            <Btn label="Next track" onClick={m.next}><SkipForward size={14} /></Btn>
+            <label className="ml-auto flex items-center gap-2 text-muted-foreground">
+              <Volume2 size={14} />
+              <input aria-label="Volume" type="range" min={0} max={1} step={0.01} value={m.vol} onChange={(event) => m.setVol(+event.target.value)} className="w-16 accent-foreground sm:w-20" />
             </label>
           </div>
         </div>
         <ul className="divide-y border-y">
-          {playlist.map((p, i) => (
-            <li key={p.title}>
-              <button onClick={() => play(i)} className={`group flex w-full items-center gap-4 py-4 text-left transition hover:pl-3 ${i === m.idx && m.loaded ? "" : "text-muted-foreground"}`}>
-                <span className="w-8 text-xs">{String(i + 1).padStart(2, "0")}</span>
-                <span className="flex-1 font-display text-xl font-bold group-hover:text-foreground">{p.title}</span>
-                <span className="font-serif italic">{p.artist}</span>
+          {playlist.map((item, i) => (
+            <li key={item.title}>
+              <button onClick={() => m.play(i)} className={`group flex w-full items-center gap-3 py-3 text-left transition hover:px-2 ${i === m.idx && m.loaded ? "" : "text-muted-foreground"}`}>
+                <span className="w-5 font-mono text-[9px]">{String(i + 1).padStart(2, "0")}</span>
+                <span className="flex-1 text-sm font-medium group-hover:text-foreground">{item.title}</span>
+                <span className="text-xs">{item.artist}</span>
                 {i === m.idx && m.playing && <Eq on />}
               </button>
             </li>
@@ -145,23 +143,22 @@ export function OnRepeat() {
       </div>
     </div>
   );
-  function play(i: number) { m.play(i); }
 }
 
 export function MiniPlayer() {
   const m = useMusic();
-  const t = playlist[m.idx]!;
+  const track = playlist[m.idx]!;
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex items-center gap-3 border bg-background/80 p-2 pr-4 backdrop-blur-md">
-      <img src={t.cover} alt="" className={`h-10 w-10 rounded-full object-cover grayscale ${m.playing ? "animate-spin-slow" : ""}`} />
-      <div className="hidden w-32 text-xs sm:block">
-        <div className="truncate">{m.loaded ? t.title : "sound off"}</div>
-        <div className="truncate text-muted-foreground">{m.loaded ? t.artist : "tap to play"}</div>
+    <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2.5 rounded-full border bg-background/90 p-1.5 pr-3 shadow-soft backdrop-blur-xl">
+      <img src={track.cover} alt="" className={`h-9 w-9 rounded-full object-cover grayscale ${m.playing ? "animate-spin-slow" : ""}`} />
+      <div className="hidden w-28 text-[11px] sm:block">
+        <div className="truncate font-medium">{m.loaded ? track.title : "Music is off"}</div>
+        <div className="truncate text-muted-foreground">{m.loaded ? track.artist : "Tap to listen"}</div>
       </div>
-      <button aria-label={m.playing ? "Pause music" : "Play music"} onClick={m.toggle} className="grid h-8 w-8 place-items-center rounded-full bg-foreground text-xs text-background">
-        {m.playing ? "❚❚" : "▶"}
+      <button aria-label={m.playing ? "Pause music" : "Play music"} onClick={m.toggle} className="grid h-9 w-9 place-items-center rounded-full bg-foreground text-background transition hover:opacity-80">
+        {m.playing ? <Pause size={13} fill="currentColor" /> : <Play size={13} fill="currentColor" />}
       </button>
-      <Eq on={m.playing} />
+      <Eq on={m.playing} className="mr-1" />
     </div>
   );
 }
