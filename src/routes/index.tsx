@@ -53,13 +53,13 @@ const PROJECTS = [
 
 function Clock() {
   const [time, setTime] = useState("");
-  useState(() => {
-    if (typeof window === "undefined") return undefined;
+  useEffect(() => {
     const update = () => setTime(new Date().toLocaleTimeString("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit" }));
     update();
-    return undefined;
-  });
-  return <span suppressHydrationWarning>{time || "IST"}</span>;
+    const timer = window.setInterval(update, 30000);
+    return () => window.clearInterval(timer);
+  }, []);
+  return <span suppressHydrationWarning>{time || "--:--"}</span>;
 }
 
 function Index() {
