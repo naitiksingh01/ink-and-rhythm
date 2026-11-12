@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Asterisk, MapPin } from "lucide-react";
-import { Intro, Reveal } from "@/components/site/fx";
+import { DotGrid, Intro, Reveal, ScrollProgress, SplitText, TiltCard } from "@/components/site/fx";
 import { MiniPlayer, MusicProvider, OnRepeat, useMusic } from "@/components/site/music";
 import { AmbientShapes, CommandMenu, CopyEmail, InlinePreview, ThemeToggle } from "@/components/site/advanced";
 import { PreviewArt, ProjectVisual } from "@/components/site/project-visual";
@@ -69,6 +69,8 @@ function Index() {
     <MusicProvider>
       <div className="grain min-h-screen overflow-x-hidden bg-background text-foreground">
         {!ready && <Intro onDone={() => setReady(true)} />}
+        <DotGrid />
+        <ScrollProgress />
         <AmbientShapes />
 
         <header className="fixed inset-x-0 top-0 z-40 border-b bg-background/85 backdrop-blur-xl">
@@ -88,12 +90,12 @@ function Index() {
           </div>
         </header>
 
-        <main id="main-content" className="mx-auto max-w-[720px] px-5 sm:px-6">
+        <main id="main-content" className="relative z-10 mx-auto max-w-[720px] px-5 sm:px-6">
           <section id="top" className="pb-16 pt-36 sm:pt-44">
             <Reveal>
               <div className="flex items-end justify-between gap-4">
                 <div>
-                  <h1 className="font-hand text-6xl leading-[.9] tracking-tight sm:text-7xl">naitik singh</h1>
+                  <h1 className="font-hand text-6xl leading-[.9] tracking-tight sm:text-7xl"><SplitText text="naitik singh" show={ready} delay={150} /></h1>
                   <p className="mt-4 text-sm text-muted-foreground">Full-stack developer · Indore, India</p>
                 </div>
                 <div className="mb-1 hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
@@ -134,11 +136,11 @@ function Index() {
                       <h3 className="text-base font-medium">{project.name}</h3>
                       <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{project.year}</span>
                     </div>
-                    <div className="aspect-[16/10] overflow-hidden rounded-2xl border bg-secondary">
-                      <div className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.018]">
+                    <TiltCard className="aspect-[16/10] overflow-hidden rounded-2xl border bg-secondary shadow-soft">
+                      <div className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.04]">
                         <ProjectVisual type={project.type} />
                       </div>
-                    </div>
+                    </TiltCard>
                     <p className="mt-4 text-sm leading-6 text-muted-foreground">{project.description}</p>
                     <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2" aria-label={`${project.name} technologies`}>
                       {project.tags.map((tag) => <li key={tag} className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">{tag}</li>)}

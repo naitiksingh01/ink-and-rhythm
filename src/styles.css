@@ -143,3 +143,16 @@
     transition-duration: .01ms !important;
   }
 }
+
+.intro-sign {
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+  fill-opacity: 0;
+  animation: sign-draw 2s cubic-bezier(.6,0,.2,1) forwards, sign-fill .8s ease 1.6s forwards;
+}
+@keyframes sign-draw { to { stroke-dashoffset: 0; } }
+@keyframes sign-fill { to { fill-opacity: 1; } }
+.intro-rise { opacity: 0; animation: intro-rise .8s cubic-bezier(.2,.8,.2,1) forwards; }
+@keyframes intro-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.tilt-shine { background: radial-gradient(400px circle at var(--sx, 50%) var(--sy, 50%), color-mix(in oklab, var(--background) 35%, transparent), transparent 60%); }
+.tilt-card:hover .tilt-shine { opacity: 1; }
